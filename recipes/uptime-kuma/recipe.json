@@ -1,0 +1,25 @@
+{
+  "name": "uptime-kuma",
+  "title": "Uptime Kuma",
+  "description": "Esempio di ricetta: monitoraggio di siti e servizi. Usa l'immagine ufficiale senza modificarla e mostra il formato delle opzioni, del test e del contenitore.",
+  "type": "image",
+  "image": "louislam/uptime-kuma",
+  "tag": "1",
+  "upstream": "https://github.com/louislam/uptime-kuma",
+  "license": "MIT",
+  "versionCmd": "node -e \"console.log(require('/app/package.json').version)\"",
+  "test": {
+    "port": 3001,
+    "startTimeout": 120,
+    "checks": [{ "method": "GET", "path": "/", "ok": true }]
+  },
+  "container": {
+    "name": "uptime-kuma",
+    "ports": ["127.0.0.1:3001:3001"],
+    "volumes": ["uptime-kuma:/app/data"],
+    "env": {}
+  },
+  "options": [
+    { "id": "node-memory", "group": "Risorse", "label": "Limita la memoria di Node a 256 MB", "default": false, "env": { "NODE_OPTIONS": "--max-old-space-size=256" } }
+  ]
+}

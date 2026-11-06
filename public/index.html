@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Leanling</title>
+  <link rel="icon" href="logo.svg">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <div class="brand"><img src="logo.svg" alt="" width="28" height="28"><span>Leanling</span></div>
+    <p class="tagline">Keep the child, skip the bloat.</p>
+    <button id="open-settings" class="ghost">Impostazioni</button>
+  </header>
+
+  <div class="layout">
+    <div class="side">
+      <nav id="recipes" aria-label="Ricette"></nav>
+      <button id="open-add" class="ghost add">+ Aggiungi programma</button>
+    </div>
+
+    <main id="main">
+      <p class="empty">Caricamento…</p>
+    </main>
+  </div>
+
+  <dialog id="settings">
+    <form method="dialog" id="settings-form">
+      <h2>Impostazioni</h2>
+
+      <fieldset>
+        <legend>Agente</legend>
+        <p class="hint">Interviene solo quando serve: legge le novità prima dell'installazione e rifà le patch che non si applicano più.</p>
+        <label class="radio"><input type="radio" name="agentType" value="none"> Nessuno</label>
+        <label class="radio"><input type="radio" name="agentType" value="claude"> Claude Code</label>
+        <label class="radio"><input type="radio" name="agentType" value="opencode"> OpenCode</label>
+        <div class="when-claude">
+          <label class="radio"><input type="radio" name="agentAuth" value="subscription"> Abbonamento (claude login)</label>
+          <label class="radio"><input type="radio" name="agentAuth" value="api"> Chiave API (a consumo)</label>
+          <label class="field when-api">Chiave API <input type="password" name="apiKey" autocomplete="off" placeholder="sk-ant-…"></label>
+        </div>
+        <label class="field">Modello <input name="model" placeholder="predefinito dell'agente"></label>
+        <label class="check"><input type="checkbox" name="review"> Revisione delle novità prima di installare</label>
+        <label class="check"><input type="checkbox" name="fixPatches"> Rifai le patch che non si applicano più</label>
+        <p class="status" id="agent-status"></p>
+      </fieldset>
+
+      <fieldset>
+        <legend>Scanner</legend>
+        <div id="scanners"></div>
+      </fieldset>
+
+      <fieldset>
+        <legend>Disco</legend>
+        <label class="field">Versioni da tenere per ricetta <input type="number" name="keepVersions" min="1" max="5"></label>
+      </fieldset>
+
+      <menu>
+        <button value="cancel" class="ghost">Chiudi</button>
+        <button value="save" id="save-settings">Salva</button>
+      </menu>
+    </form>
+  </dialog>
+
+  <dialog id="add">
+    <form method="dialog" id="add-form">
+      <h2>Aggiungi programma</h2>
+      <p class="hint">Indirizzo della repo git (con un Dockerfile) oppure nome dell'immagine Docker ufficiale.</p>
+      <label class="field">Repo o immagine <input name="source" required placeholder="https://github.com/autore/progetto  oppure  autore/immagine:tag"></label>
+      <label class="field">Nome della ricetta (facoltativo) <input name="name" pattern="[a-z0-9][a-z0-9-]*" placeholder="dal nome del progetto"></label>
+      <label class="check"><input type="checkbox" name="analyze" checked><span>Fai analizzare il progetto all'agente<small>propone interruttori ufficiali per telemetria e funzioni a pagamento, e patch al Dockerfile. Tutto spento finché non lo scegli tu.</small></span></label>
+      <p class="status" id="add-agent"></p>
+      <menu>
+        <button value="cancel" class="ghost" formnovalidate>Annulla</button>
+        <button value="add">Aggiungi</button>
+      </menu>
+    </form>
+  </dialog>
+
+  <template id="tpl-recipe">
+    <section class="recipe">
+      <div class="head">
+        <div>
+          <h1></h1>
+          <p class="desc"></p>
+        </div>
+        <div class="actions">
+          <button data-act="update">Cerca aggiornamenti e prepara</button>
+          <button data-act="install" class="ok">Installa il figlio pronto</button>
+          <button data-act="rollback" class="ghost">Torna alla precedente</button>
+          <button data-act="clean" class="ghost">Pulisci</button>
+        </div>
+      </div>
+      <div class="versions"></div>
+      <div class="tabs" role="tablist">
+        <button role="tab" data-tab="choices" aria-selected="true">Selezioni</button>
+        <button role="tab" data-tab="container">Contenitore</button>
+        <button role="tab" data-tab="activity">Attività</button>
+        <button role="tab" data-tab="info">Licenza e origine</button>
+      </div>
+      <div class="tab" data-panel="choices"></div>
+      <div class="tab" data-panel="container" hidden></div>
+      <div class="tab" data-panel="activity" hidden></div>
+      <div class="tab" data-panel="info" hidden></div>
+    </section>
+  </template>
+
+  <footer>Realizzato con <a href="https://agicloud.dev">AgiCloud</a> e Claude Code, per l'amore delle VPS leggere e in salute.</footer>
+  <script type="module" src="app.js"></script>
+</body>
+</html>

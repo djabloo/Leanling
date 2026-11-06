@@ -1,0 +1,13 @@
+{
+  "name": "leanling",
+  "version": "0.1.0",
+  "description": "Crea e mantiene aggiornato un \"figlio\" snello dei programmi self-hosted: solo quello che usi, controllato prima di installarlo.",
+  "type": "module",
+  "bin": { "leanling": "bin/leanling.js" },
+  "engines": { "node": ">=20" },
+  "scripts": {
+    "dashboard": "node bin/leanling.js dashboard",
+    "test": "node --test test/*.test.js"
+  },
+  "license": "MIT"
+}
